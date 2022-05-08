@@ -38,7 +38,7 @@ const userSchema = new Schema(
     toJSON: {
       virtuals: true,
     },
-    id: false,
+    id: true,
   }
 );
 userSchema.plugin(uniqueValidator);
@@ -48,13 +48,13 @@ userSchema
   .virtual('friendCount')
   // Getter
   .get(function () {
-    const friendLength = this.friends.length
+    const friendLength = this.friends.length;
     return `${friendLength}`;
   }).set(friendLength);
   // Setter to set the first and last name
  
 
 // Initialize our User model
-const User = model('user', userSchema);
+const User = model('users', userSchema);
 //todo add uniqueValidator to exports?
 module.exports = User;
