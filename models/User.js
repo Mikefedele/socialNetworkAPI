@@ -1,5 +1,6 @@
 // Schema to create User model
-const { Schema, model, SchemaType } = require('mongoose');
+
+const { Schema, model } = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator')
 
 // Schema to create User model
@@ -22,13 +23,13 @@ const userSchema = new Schema(
     thoughts: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'thoughts',
+        ref: 'Thought',
       },
     ],
     friends: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'users'
+        ref: 'User'
       }
     ]
   },
@@ -38,12 +39,11 @@ const userSchema = new Schema(
     toJSON: {
       virtuals: true,
     },
-    id: true,
+    id: false,
   }
 );
 userSchema.plugin(uniqueValidator);
 
-// Create a virtual property `fullName` that gets and sets the user's full name
 userSchema
   .virtual('friendCount')
   // Getter
@@ -51,10 +51,9 @@ userSchema
     const friendLength = this.friends.length;
     return `${friendLength}`;
   }).set(friendLength);
-  // Setter to set the first and last name
  
 
 // Initialize our User model
 const User = model('users', userSchema);
-//todo add uniqueValidator to exports?
+
 module.exports = User;
