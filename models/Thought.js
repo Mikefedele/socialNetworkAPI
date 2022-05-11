@@ -61,7 +61,7 @@ thoughtSchema.virtual('reactionCount')
 })
 // .set(reactionLength);
 
-const Thought = model('thoughts', thoughtSchema);
+const Thought = model('Thought', thoughtSchema);
 
 
 
