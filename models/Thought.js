@@ -1,6 +1,32 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, Types } = require('mongoose');
+// const ObjectId = mongoose.SchemaType.ObjectId;
+
 //going to keep reaction schema in this file 
 //instead of export
+
+
+const reactionSchema = new Schema(
+  {
+    reactionId: {
+      type: Schema.Types.ObjectId,
+        default: new Types.ObjectId
+    },
+    reactionBody: {
+      type: String,
+      required: true,
+      maxlength: 280
+    },
+    userName: {
+      type: String,
+      required: true
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now
+    }
+  }
+);
+
 
 const thoughtSchema = new Schema(
   {
@@ -11,7 +37,7 @@ const thoughtSchema = new Schema(
       maxlength: 280
     },
     createdAt: {
-      date: Date,
+      type: Date,
       default: Date.now
     },
     userName: {
@@ -32,33 +58,12 @@ thoughtSchema.virtual('reactionCount')
 .get(function () {
   const reactionLength = this.reactions.length;
   return `${reactionLength}`;
-}).set(reactionLength);
+})
+// .set(reactionLength);
 
 const Thought = model('thoughts', thoughtSchema);
 
 
-const ObjectId = mongoose.SchemaType.ObjectId;
 
-const reactionSchema = new Schema(
-  {
-    reactionId: {
-      type: ObjectId,
-        default: new ObjectId
-    },
-    reactionBody: {
-      type: String,
-      required: true,
-      maxlength: 280
-    },
-    userName: {
-      type: String,
-      required: true
-    },
-    createdAt: {
-      date: Date,
-      default: Date.now
-    }
-  }
-);
 
-module.exports = { Thought }
+module.exports = Thought 

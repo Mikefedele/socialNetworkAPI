@@ -9,8 +9,8 @@ module.exports = {
 
   getSingleUser(req, res) {
     User.findOne({ _id: req.params.userId })
-      .select("__v")
-      .populate("thoughts")
+      .select("-__v")
+      // .populate("friends")
       .then((user) =>
         !user
           ? res.status(404).json({ message: "No user with that ID" })
@@ -58,4 +58,20 @@ module.exports = {
     )
     .catch((err) => res.status(500).json(err))
   },
+
+  removeFriend(req, res) {
+    User.findOneAndUpdate(
+       { _id: req.params.userId },
+       { $pull: { friends: req.params.friendId } },
+       { runValidators: true, new: true })
+       .then((user) =>
+          !user
+             ? res.status(404).json({ message: 'No such user exists' })
+             : res.json(user)
+       )
+       .catch((err) => {
+          console.log(err);
+          res.status(500).json(err);
+       });
+ },
 };

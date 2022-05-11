@@ -18,6 +18,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
       unique: true,
+      match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/],
       // runValidators: true, context: 'query'
     },
     thoughts: [
@@ -38,6 +39,7 @@ const userSchema = new Schema(
     // Here we are indicating that we want virtuals to be included with our response, overriding the default behavior
     toJSON: {
       virtuals: true,
+      getters: true,
     },
     id: false,
   }
@@ -48,9 +50,10 @@ userSchema
   .virtual('friendCount')
   // Getter
   .get(function () {
-    const friendLength = this.friends.length;
-    return `${friendLength}`;
-  }).set(friendLength);
+    return this.friends.length;
+     
+  })
+  // .set(friendLength);
  
 
 // Initialize our User model
